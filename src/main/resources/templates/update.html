@@ -1,0 +1,99 @@
+<!DOCTYPE html> <!--PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"-->
+<HTML xmlns:th="http://www.thymeleaf.org">
+<HEAD>
+    <META content="IE=11.0000"
+          http-equiv="X-UA-Compatible">
+
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <TITLE>维护新投票</TITLE>
+    <LINK href="css/style.css" rel="stylesheet" type="text/css">
+    <META name="GENERATOR" content="MSHTML 11.00.10586.420">
+</HEAD>
+<BODY>
+<div th:include="head.html"></div>
+<DIV class="box" id="voteManage">
+    <H2>修改新投票</H2>
+    <DIV class="content">
+        <FORM  id="form"  action="addSubjectAndOptions" th:action="updateOptions" method="post">
+            <DL>
+                <DT>投票内容：</DT>
+                <DD>
+                    <INPUT name="sid" type="hidden"  th:value="${subject.sid}">
+                    <INPUT name="title" class="input-text" id="title" type="text" th:value="${subject.getTitle()}" th:attr="disabled=${subject.getTitle()!=null?'disabled':''}">
+                </DD>
+                <DT>投票类型：</DT>
+                <DD>
+                    <INPUT name="type" type="radio" value="radio" th:checked="${subject.getType()=='radio'?true:false}">单选
+                    <INPUT name="type" type="radio" value="checkbox" th:checked="${subject.getType()=='checkbok'?true:false}">多选
+                </DD>
+                <DT>投票选项：</DT>
+                <DD id="voteoptions">
+                    <P th:each="options,nsStat:${subject.getOptionsList()}">
+                        <INPUT name="oid" type="hidden" th:value="${options.getOid()}" th:if="${subject.getSid()>0}"/>
+                        <INPUT name="options" class="input-text" type="text" th:value="${options.getContent()}">
+                    </P>
+                </DD>
+                <DT></DT>
+                <DD class="button"><INPUT type="image" src="images/button_submit.gif">
+                    <A onclick="AddOption()" href="javascript:void(0);">增加选项</A> <A
+                            href="initMaintain">取消操作</A>
+                </DD>
+            </DL>
+        </FORM>
+    </DIV>
+</DIV>
+<DIV class="wrap" id="footer"> 北大青鸟 © 版权所有</DIV>
+</BODY>
+<script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
+<script th:inline="javascript" type="text/javascript">
+    $(function () {
+        var sid = [[${subject.getSid()}]];
+        if (sid>0){
+            $("input[name='options']:gt(1)").after("<a id='del' href='javascript:void(0)'>删除</a>")
+        }
+
+    });
+</script>
+<SCRIPT type="text/javascript">
+    function AddOption(){
+        $("#voteoptions").append("<P><INPUT name='options' class='input-text' type='text'><a id='del' href='javascript:void(0)'>删除</a></P>");
+    }
+    $(function(){
+        $("#del").live("click",function () {
+            $(this).prev().remove();
+            $(this).remove();
+        });
+        $("#form").submit(function(){
+            var type = $("input[name='type']:checked").val();
+            if (type ==null){
+                alert("所有投票类型不能为空！");
+                return false;
+            }
+
+            var options = new Array();
+            var falgs = false;
+            $("input[name='options']").each(function(i,item){
+                if (item.value ==''){
+                    alert('所有投票选项不能为空！');
+                    falgs = false;
+                    return false;
+                }
+                falgs = true;
+                options[i] = item.value;
+            })
+            for (var i=0;i<options.length;i++){
+                for (var j=i+1;j<options.length;j++){
+                    if (options[i]==options[j]){
+                        alert("投票选项重复！");
+                        return false;
+                    }
+                }
+            }
+            if(falgs != true){
+                return false;
+            }
+            return true;
+        });
+    });
+</SCRIPT>
+</HTML>

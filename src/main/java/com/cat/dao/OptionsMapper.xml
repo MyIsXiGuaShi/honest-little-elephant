@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cat.dao.OptionsMapper">
+    <insert id="addOptions" parameterType="Options">
+        INSERT INTO `options`(`content`,`osid`) VALUES
+        <foreach collection="options" item="item" separator=",">
+            (#{item.content},#{item.osid})
+        </foreach>
+    </insert>
+    <update id="updaOptions" parameterType="Options">
+        UPDATE `options`
+        SET `content` = CASE `oid`
+        <foreach collection="options" item="item">
+            WHEN #{item.oid} THEN #{item.content}
+        </foreach>
+        END
+        WHERE `oid` IN
+        <foreach collection="options" item="item" open="(" separator="," close=")">
+            #{item.oid}
+        </foreach>
+    </update>
+    <delete id="deleOptions" parameterType="Options">
+        DELETE FROM `options` WHERE `oid` IN
+        <foreach collection="options" item="item" open="(" separator="," close=")">
+            #{item.oid}
+        </foreach>
+    </delete>
+    <delete id="deleOptionsOsid" parameterType="int">
+        DELETE FROM `options` WHERE `osid`= #{osid}
+    </delete>
+</mapper>

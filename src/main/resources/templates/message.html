@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div th:include="head.html"></div>
+<div id="message" class="box">
+    <h2>提示信息</h2>
+    <div class="content">
+        <p>恭喜：<span th:text="${session.message}">注册成功！</span><a href="initVotelist">进入投票首页&gt;&gt;</a></p>
+    </div>
+</div>
+<div id="footer" class="wrap">
+    北大青鸟 &copy; 版权所有
+</div>
+</body>
+</html>

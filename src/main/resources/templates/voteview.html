@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<HTML xmlns:th="http://www.thymeleaf.org">
+<HEAD>
+    <META content="IE=11.0000"
+          http-equiv="X-UA-Compatible">
+
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <TITLE></TITLE>
+    <LINK href="css/style.css" rel="stylesheet" type="text/css">
+    <META name="GENERATOR" content="MSHTML 11.00.10586.420">
+</HEAD>
+<BODY>
+<DIV th:include="head.html"></DIV>
+<DIV class="wrap" id="vote">
+    <H2>查看投票</H2>
+    <UL class="list">
+        <LI>
+            <H4 th:text="${subject.getTitle()}">哪个浏览器好用</H4>
+            <P class="info">共有 <span th:text="${subject.getOptionNum()}">4</span> 个选项，已有 <span th:text="${subject.getSpoll()}">15</span> 个投票。</P>
+
+            <OL>
+                <LI th:each="options,nsStat:${subject.getOptionsList()}"><span th:text="${options.getContent()}">IE</span>
+                    <DIV class="rate">
+                        <DIV class="ratebg" >
+                            <DIV class="percent" style="width: 0%;" th:style="${options.getOpoll()==0?'width:0%':'width:'+#numbers.formatDecimal((options.getOpoll()/(subject.getSpoll()*1.0))*100,1,2)+'%'}"></DIV>
+                        </DIV>
+                        <P th:text="${options.getOpoll()==0?'0票(0.0%)':options.getOpoll()+'票('+#numbers.formatDecimal((options.getOpoll()/(subject.getSpoll()*1.0))*100,1,2)+'%)'}">0票<SPAN>0.0%</SPAN></P></DIV>
+                </LI>
+            </OL>
+            <DIV class="goback"><A href="initVotelist">返回投票列表</A></DIV>
+        </LI>
+    </UL>
+</DIV>
+<DIV class="wrap" id="footer"> 北大青鸟 © 版权所有</DIV>
+</BODY>
+</HTML>

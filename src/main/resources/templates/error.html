@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>出错啦</title>
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div th:include="head.html"></div>
+<div id="vote" class="wrap">
+    <ul class="error">
+        <li><span th:text="${session.error}">模板解析出错</span></li></ul>
+    <br/>
+
+</div>
+<div id="footer" class="wrap">
+    北大青鸟 &copy; 版权所有
+</div>
+</body>
+</html>

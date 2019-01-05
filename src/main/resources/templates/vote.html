@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<HTML xmlns:th="http://www.thymeleaf.org">
+<HEAD>
+    <META content="IE=11.0000"
+          http-equiv="X-UA-Compatible">
+
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <TITLE>参与投票</TITLE>
+    <LINK href="css/style.css" rel="stylesheet" type="text/css">
+    <META name="GENERATOR" content="MSHTML 11.00.10586.420">
+</HEAD>
+<BODY>
+<DIV th:include="head.html"></DIV>
+<DIV class="wrap" id="vote">
+    <H2>参与投票</H2>
+    <UL class="list">
+        <LI>
+            <H4 th:text="${subject.getTitle()}">就业意向城市</H4>
+            <P class="info">共有 <span th:text="${subject.getOptionNum()}">4</span> 个选项，已有 <span th:text="${subject.getSpoll()}">9</span> 个投票。</P>
+            <FORM action="vote" method="post">
+                <INPUT name="sid" th:value="${subject.getSid()}" type="hidden" value="1">
+                <INPUT name="uid" type="hidden" value="4" th:value="${session.user.getUid()}">
+                <OL>
+                    <LI th:each="options,nsStat:${subject.getOptionsList()}">
+                        <INPUT name="oid" type="radio" th:type="${subject.getType()}" value="2" th:value="${options.getOid()}" th:text="${options.getContent()}">
+                    </LI>
+                </OL>
+                <P class="voteView"><INPUT type="image" src="images/button_vote.gif"/>
+                    <A th:href="@{voteView(sid=${subject.getSid()})}">
+                    <IMG src="images/button_view.gif"/></A></P></FORM>
+                <ul>
+                    <li></li>
+                </ul>
+        </LI>
+    </UL>
+</DIV>
+<DIV class="wrap" id="footer"> 北大青鸟 © 版权所有</DIV>
+</BODY>
+</HTML>

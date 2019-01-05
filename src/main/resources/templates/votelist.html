@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<HTML xmlns:th="http://www.thymeleaf.org">
+<HEAD>
+    <META content="IE=11.0000"
+          http-equiv="X-UA-Compatible">
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <TITLE>投票列表</TITLE>
+    <LINK href="css/style.css" rel="stylesheet" type="text/css">
+    <META name="GENERATOR" content="MSHTML 11.00.10586.420">
+</HEAD>
+<BODY>
+<DIV th:include="head.html"></DIV>
+<DIV class="wrap" id="vote">
+    <H2>投票列表</H2>
+    <DIV style="float: right;"><A th:href="@{page(pageNum=1)}" th:if="${page.getPageNum() ne 1}">首页</A><span th:if="${page.getPageNum() eq 1}">首页</span>
+        | <span th:if="${page.getPageNum() le 1}">上一页</span><a th:href="@{page(pageNum=${page.getPageNum() -1})}" th:if="${page.getPageNum() gt 1}">上一页</a> | <a th:href="@{page(pageNum=${page.getPageNum()+1})}" th:if="${page.getPageNum() ne page.getPages()}">下一页</a> <span th:if="${page.getPageNum() eq page.getPages()}">下一页</span> | <A th:href="@{page(pageNum=${page.getPages()})}" th:if="${page.getPageNum() ne page.getPages()}">末页</A><span th:if="${page.getPageNum() eq page.getPages()}">末页</span>
+    </DIV>
+    <BR>
+    <UL class="list" >
+        <LI class="odd" th:each="vars,nsStat:${page.getResult()}" th:class="${nsStat.odd}?'odd'">
+            <H4><A  th:href="@{voteView(sid=${vars.getSid()})}" th:text="${vars.getTitle()}">哪个浏览器好用</A>
+            </H4>
+            <DIV class="join"><A th:href="@{vote(sid=${vars.getSid()})}">我要参与</A></DIV>
+            <P class="info">共有 <span th:text="${vars.getOptionNum()}">4</span> 个选项，已有 <span th:text="${vars.getPeopleNum()}">15</span> 个投票。</P></LI>
+    </UL>
+    <DIV style="float: right;"><A th:href="@{page(pageNum=1)}" th:if="${page.getPageNum() ne 1}">首页</A><span th:if="${page.getPageNum() eq 1}">首页</span>
+        | <span th:if="${page.getPageNum() le 1}">上一页</span><a th:href="@{page(pageNum=${page.getPageNum() -1})}" th:if="${page.getPageNum() gt 1}">上一页</a> | <a th:href="@{page(pageNum=${page.getPageNum()+1})}" th:if="${page.getPageNum() ne page.getPages()}">下一页</a> <span th:if="${page.getPageNum() eq page.getPages()}">下一页</span> | <A th:href="@{page(pageNum=${page.getPages()})}" th:if="${page.getPageNum() ne page.getPages()}">末页</A><span th:if="${page.getPageNum() eq page.getPages()}">末页</span>
+    </DIV>
+</DIV>
+<DIV class="wrap" id="footer"> 北大青鸟 © 版权所有</DIV>
+</BODY>
+</HTML>

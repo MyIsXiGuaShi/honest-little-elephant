@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cat.dao.SubjectMapper">
+    <select id="selectVotelist" parameterType="String" resultType="Subject">
+        SELECT S.`sid`,S.`title`,
+               COUNT(DISTINCT O.`oid`) AS `optionNum`,COUNT(DISTINCT I.`uid`) AS `peopleNum`
+        FROM `subject` AS S
+                 LEFT JOIN `options` AS O ON O.`osid`= S.`sid`
+                 LEFT JOIN `item` AS I ON I.`sid`=S.`sid`
+        <if test="title != null and title != ''">
+            WHERE  S.`title` LIKE CONCAT('%',#{title},'%')
+        </if>
+        GROUP BY S.`sid`
+    </select>
+
+    <select id="seleVoteView" parameterType="int" resultMap="SubjectMapA">
+        SELECT S.`sid`,S.`title`,
+               COUNT(DISTINCT O.`oid`) AS optionNum,COUNT(DISTINCT I.`iid`) AS spoll
+        FROM `subject` AS S
+                 LEFT JOIN `options` AS O ON O.`osid`= S.`sid`
+                 LEFT JOIN `item` AS I ON I.`sid`=S.`sid`
+        WHERE S.`sid` = #{sid}
+        GROUP BY S.`sid`
+    </select>
+
+    <resultMap id="SubjectMapA" type="Subject">
+        <id column="sid" property="sid"/>
+        <collection property="optionsList" select="optionsListA" column="sid" ofType="Options"/>
+    </resultMap>
+
+    <select id="optionsListA" resultType="Options">
+        SELECT O.`content`,COUNT(I.`iid`) AS opoll FROM `options` AS O
+        LEFT JOIN `item` AS I ON I.`oid`=O.`oid`
+        WHERE O.`osid`=#{sid}
+        GROUP BY o.`oid`
+    </select>
+
+    <select id="selectVote" resultMap="SubjectMapB">
+        SELECT S.`sid`,S.`title`,S.`type`,
+        COUNT(DISTINCT O.`oid`) AS optionNum,COUNT(DISTINCT I.`iid`) AS spoll
+        FROM `subject` AS S
+             LEFT JOIN `options` AS O ON O.`osid`= S.`sid`
+             LEFT JOIN `item` AS I ON I.`sid`=S.`sid`
+        WHERE S.`sid` = #{sid}
+        GROUP BY S.`sid`
+    </select>
+
+    <resultMap id="SubjectMapB" type="Subject">
+        <id property="sid" column="sid"/>
+        <collection property="optionsList" column="sid" select="optionsListB" ofType="Options"/>
+    </resultMap>
+    <select id="optionsListB" resultType="Options">
+        SELECT `oid`,`content` FROM `options` WHERE `osid`=#{sid}
+    </select>
+    <select id="verifyTitle" resultType="int" parameterType="string">
+        SELECT `sid` FROM `subject` WHERE `title` LIKE #{title}
+    </select>
+    <insert id="addSubject" parameterType="Subject" keyProperty="sid" useGeneratedKeys="true">
+        INSERT INTO `subject`(`title`,`type`) VALUES(#{title},#{type})
+    </insert>
+    <update id="updaSubject" parameterType="Subject">
+        UPDATE `subject` SET `type`=#{type} WHERE `sid` = #{sid}
+    </update>
+    <delete id="deleSubject" parameterType="int">
+        DELETE FROM `subject` WHERE `sid` =#{sid}
+    </delete>
+</mapper>
