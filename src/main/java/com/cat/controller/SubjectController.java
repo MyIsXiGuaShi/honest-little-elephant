@@ -224,13 +224,16 @@ public class SubjectController {
     }
     private boolean yanZhen(HttpSession session){
         User user =(User) session.getAttribute(Label.USER);
-        if(user!=null){
-            if(Label.COMMON.equals(user.getIsAdmin())){
-                return false;
-            }else{
-                return true;
-            }
+        if(user==null) {
+            return false;
         }
-        return false;
+        return foo(user);
+    }
+    private boolean foo(User user){
+        if(Label.COMMON.equals(user.getIsAdmin())){
+            return false;
+        }else{
+            return true;
+        }
     }
 }
