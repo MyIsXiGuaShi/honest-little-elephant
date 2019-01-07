@@ -6,7 +6,6 @@ import com.cat.pojo.User;
 import com.cat.service.SubjectService;
 import com.cat.util.Label;
 import com.github.pagehelper.Page;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 控制类
+ */
 @Controller
 public class SubjectController {
     private Map<String,String> map = new HashMap<>();
